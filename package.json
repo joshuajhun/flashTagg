@@ -1,0 +1,26 @@
+{
+  "name": "flash-tagg",
+  "version": "1.0.0",
+  "description": "an application that grabs user specific data in real time using web sockets ",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshuajhun/flashTagg.git"
+  },
+  "keywords": [
+    "npm",
+    "mocha",
+    "web",
+    "sockets"
+  ],
+  "author": "Jhun de Andres",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshuajhun/flashTagg/issues"
+  },
+  "homepage": "https://github.com/joshuajhun/flashTagg#readme"
+}
