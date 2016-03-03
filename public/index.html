@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>forlashTagg</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <h1>flashTagg</h1>
+    <div id="connection-count"></div>
+    <div id="status-message"></div>
+  </head>
+  <body>
+    <br><br>
+    <div id="votes-count"></div>
+    <div id="vote-item"></div>
+
+<h3>things you can vote for!</h3>
+    <div id="choices">
+    <button class='btn-floating btn-large red'>A</button>
+    <button class='btn-floating btn-large red'>B</button>
+    <button class='btn-floating btn-large red'>C</button>
+    <button class='btn-floating btn-large red'>D</button>
+  </div>
+    <!-- Make sure your JS is at the bottom of the body! -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+
+  </body>
+</html>

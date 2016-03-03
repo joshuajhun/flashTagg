@@ -22,5 +22,13 @@
   "bugs": {
     "url": "https://github.com/joshuajhun/flashTagg/issues"
   },
-  "homepage": "https://github.com/joshuajhun/flashTagg#readme"
+  "homepage": "https://github.com/joshuajhun/flashTagg#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "lodash": "^4.6.1",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "express": "^4.13.4"
+  }
 }
