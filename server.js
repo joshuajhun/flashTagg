@@ -15,7 +15,7 @@ server.listen(port, function(){
 app.use(express.static('public'));
 
 app.get('/', function(req, res){
-  res.sendFil(__dirname + '/public/index.html');
+  res.render(__dirname + '/public/index.html');
 })
 
 var votes = {};
