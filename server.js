@@ -17,5 +17,28 @@ app.get('/', function(req, res){
   res.sendFil(__dirname + '/public/index.html');
 })
 
+io.on('connection', function(socket){
+  console.log('A user has connected', io.engine.clientsCount);
+
+  io.sockets.emit('usersConnected', io.engine.clientsCount);
+
+  socket.emit('status-message','You have connected.');
+
+  socket.on('message', function(channel, message){
+    if(channel === 'voteCast'){
+      votes[socket.id] = message
+      socket.emit('voteCount', countVotes(votes));
+      socket.emit('currentVoteCount', 'You voted for: ' + message)
+    }
+  });
+
+  socket.on('disconnect', function(){
+    console.log('A user has disconnected', io.engine.clientsCount);
+    delete votes[socket.id];
+    socket.emit('voteCount', countVotes(votes));
+    io.sockets.emit('usersConnected', io.engine.clientsCount);
+  });
+});
+
 
 module.exports = server;
