@@ -9,12 +9,15 @@ Votes.prototype.countVotes = function(poll){
       C: 0,
       D: 0
   };
-  // const locus = require('locus')
-  // eval(locus);
   for ( vote in poll) {
     voteCount[poll[vote]]++
   }
     return voteCount;
-  }
+};
+
+Votes.prototype.createPoll = function(){
+}
+
+
 
 module.exports = Votes;

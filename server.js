@@ -7,30 +7,36 @@ const io       = socketIo(server);
 var port       = process.env.PORT || 3000;
 const Votes      = require('./votes')
 const votes      = new Votes()
+const locus = require('locus');
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 server.listen(port, function(){
   console.log('listening on port '+ port + '.');
 });
 
+app.set('view engine', 'ejs');
+
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
+app.get('/', function(request, response){
+  response.render('index');
 })
 
 app.get('/admin', function(req, res){
-  res.sendFile(__dirname + '/public/admin.html');
+  res.render('/admin');
 })
 
 app.get('/votes', function(req, res){
-  res.sendFile(__dirname + '/public/vote.html');
+  res.render('vote');
 })
 
-
-
-
-
+app.post('/votes', function(request, results){
+eval(locus);
+})
 io.on('connection', function (socket) {
   console.log('A user has connected.', io.engine.clientsCount);
 
