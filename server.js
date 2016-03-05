@@ -1,13 +1,14 @@
 const http     = require('http');
+const path     = require('path')
 const express  = require('express');
 const app      = express()
 var server     = http.createServer(app)
 const socketIo = require('socket.io');
 const io       = socketIo(server);
 var port       = process.env.PORT || 3000;
-const Votes      = require('./votes')
-const votes      = new Votes()
-const locus = require('locus');
+const Votes    = require('./votes')
+const votes    = new Votes()
+const locus    = require('locus');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -20,14 +21,14 @@ server.listen(port, function(){
 app.set('view engine', 'ejs');
 
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(request, response){
-  response.render('index');
+  response.render(__dirname + '/views/index');
 })
 
 app.get('/admin', function(req, res){
-  res.render('/admin');
+  res.render(__dirname + '/views/vote');
 })
 
 app.get('/votes', function(req, res){
@@ -35,8 +36,18 @@ app.get('/votes', function(req, res){
 })
 
 app.post('/votes', function(request, results){
-eval(locus);
-})
+  var pollChoices = {}
+  var requestPayload = request.body
+  var title = requestPayload.title
+  var choices = requestPayload.pollInformation.choices
+  var addPollChoiceToPage = document.getElementById('add-poll-choice')
+
+  var newPoll = choices.forEach(function(choice){
+    return (pollChoices[choice] = 0)
+  })
+
+  })
+
 io.on('connection', function (socket) {
   console.log('A user has connected.', io.engine.clientsCount);
 
