@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+      <script rel="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.2/js/materialize.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <title>Welcome To flashTagg</title>
+  </head>
+  <body>
+    <h1>Welcome To flashTagg</h1>
+    <form action="/votes" method="POST" name="poll" class="col s6 offset-s3" id='choice-index'>
+    <div class="row">
+      <div class="input-field col s12">
+        <input name="poll[title]" id="poll-title" type="text" placeholder='Title'>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input name="pollInformation[question]" id="question" type="text" placeholder='Question' >
+      </div>
+    </div>
+    <div class="responses">
+    <div class="row">
+      <div class="input-field col s12">
+        <input name="pollInformation[choices][]"  type="text" placeholder='Choice' >
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <input name="pollInformation[choices][]" type="text" placeholder="Choice">
+      </div>
+    </div>
+  </div>
+</form>
+  <button class="btn waves-effect waves-light" type="submit">Submit</button>
+  <button type="button" id="add-poll-choice" class="btn-floating btn-small waves-effect waves-light red">
+    +
+  </button>
+  <script src='/index.js'></script>
+
+  </body>
+
+
+
+</html>
