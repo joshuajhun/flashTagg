@@ -9,7 +9,9 @@ var port       = process.env.PORT || 3000;
 const Votes    = require('./votes')
 const votes    = new Votes()
 const locus    = require('locus');
-
+const generateId = require('./lib/generateId')
+const generateRoutes = require('./lib/generateRoutes')
+app.locals.votes = {}
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,22 +33,37 @@ app.get('/admin', function(req, res){
   res.render(__dirname + '/views/vote');
 })
 
-app.get('/votes', function(req, res){
+app.get('/votes/:id', function(req, res){
+  eval(locus)
+  var votes = app.locals.votes[request.params.id];
   res.render('vote');
 })
 
-app.post('/votes', function(request, results){
+app.post('/poll', function(request, results){
+
   var pollChoices = {}
+  var id = generateId()
+  var adminId = generateRoutes.adminId()
+  var userRoute = generateRoutes.votePath(request)
+  var adminRoute = generateRoutes.adminPath(request)
   var requestPayload = request.body
-  var title = requestPayload.title
+  var title = requestPayload.poll.title
   var choices = requestPayload.pollInformation.choices
-  var addPollChoiceToPage = document.getElementById('add-poll-choice')
+  var question = requestPayload.pollInformation.question
+  app.locals.votes[id] = votes
 
   var newPoll = choices.forEach(function(choice){
     return (pollChoices[choice] = 0)
   })
 
+
+  var votes = new Votes( id,adminId, userRoute, adminRoute,pollChoices, title, question)
+
+  results.render(__dirname + '/views/poll',{
+    vote:votes
   })
+eval(locus)
+})
 
 io.on('connection', function (socket) {
   console.log('A user has connected.', io.engine.clientsCount);
@@ -58,7 +75,7 @@ io.on('connection', function (socket) {
   socket.on('message', function (channel, message) {
     if (channel === 'voteCast') {
       votes.poll[socket.id] = message;
-      socket.emit('voteCount', votes.countVotes(votes.poll));
+      socket.emit('voteCount', votes.countVotes(votes.pollChoices));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
   });

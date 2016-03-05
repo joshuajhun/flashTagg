@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1>Welcome To flashTagg</h1>
-    <form action="/votes" method="POST" name="poll" class="col s6 offset-s3" id='choice-index'>
+    <form action="/poll" method="POST" name="poll" class="col s6 offset-s3" id='choice-index'>
     <div class="row">
       <div class="input-field col s12">
         <input name="poll[title]" id="poll-title" type="text" placeholder='Title'>
@@ -32,11 +32,11 @@
       </div>
     </div>
   </div>
-</form>
   <button class="btn waves-effect waves-light" type="submit">Submit</button>
   <button type="button" id="add-poll-choice" class="btn-floating btn-small waves-effect waves-light red">
     +
   </button>
+</form>
   <script src='/index.js'></script>
 
   </body>
