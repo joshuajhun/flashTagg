@@ -29,13 +29,12 @@ app.get('/', function(request, response){
   response.render(__dirname + '/views/index');
 })
 
-app.get('/admin', function(req, res){
+app.get('/admin/:id/:adminId', function(req, res){
   res.render(__dirname + '/views/vote');
 })
 
-app.get('/votes/:id', function(req, res){
-  eval(locus)
-  var votes = app.locals.votes[request.params.id];
+app.get('/poll/:id', function(req, res){
+  var votes = app.locals.votes[req.params.id];
   res.render('vote');
 })
 
@@ -62,7 +61,7 @@ app.post('/poll', function(request, results){
   results.render(__dirname + '/views/poll',{
     vote:votes
   })
-eval(locus)
+
 })
 
 io.on('connection', function (socket) {
