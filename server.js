@@ -56,7 +56,7 @@ app.post('/poll', function(request, results){
   app.locals.votes[id] = votes
 
   var newPoll = choices.forEach(function(choice){
-    return (pollChoices[choice] = 0)
+    return (pollChoices[choice.trim()] = 0)
   })
 
 
@@ -68,16 +68,10 @@ app.post('/poll', function(request, results){
 })
 
 io.on('connection', function (socket) {
-  // console.log('A user has connected.', io.engine.clientsCount);
-  //
-  // io.sockets.emit('usersConnected', io.engine.clientsCount);
-  //
-  // socket.emit('statusMessage', 'You have connected.');
   var userVotes = {};
   socket.on('message', function (channel, message, id) {
     if (channel === 'voteCast') {
       userVotes[socket.id] = message
-
       socket.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
@@ -95,6 +89,7 @@ io.on('connection', function (socket) {
  var voteCount = app.locals.votes[id].pollChoices;
    for (var pick in userVotes) {
      voteCount[userVotes[pick]]++
+
    }
    return voteCount;
  }
