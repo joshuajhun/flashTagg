@@ -30,7 +30,8 @@ app.get('/', function(request, response){
 })
 
 app.get('/admin/:id/:adminId', function(req, res){
-  res.render(__dirname + '/views/vote');
+  var votes = app.locals.votes[req.params.id];
+  res.render(__dirname + '/views/admin', {votes: votes.pollChoices});
 })
 
 app.get('/poll/:id', function(req, res){
@@ -52,9 +53,10 @@ app.post('/poll', function(request, results){
   var title = requestPayload.poll.title
   var choices = requestPayload.pollInformation.choices
   var question = requestPayload.pollInformation.question
-  var votes = new Votes( id,adminId, userRoute, adminRoute,pollChoices, title, question, choices)
-  app.locals.votes[id] = votes
 
+  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices)
+
+  app.locals.votes[id] = votes
   var newPoll = choices.forEach(function(choice){
     return (pollChoices[choice.trim()] = 0)
   })
@@ -74,6 +76,7 @@ io.on('connection', function (socket) {
       userVotes[socket.id] = message
       socket.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
+      socket.emit('addminVoteCount', countVotes(userVotes, id))
     }
   });
 
@@ -88,10 +91,13 @@ io.on('connection', function (socket) {
  function countVotes(userVotes, id) {
  var voteCount = app.locals.votes[id].pollChoices;
    for (var pick in userVotes) {
+     if(userVotes[pick]){
      voteCount[userVotes[pick]]++
-
+   } else {
+     voteCount[userVotes[pick]] = 1
    }
    return voteCount;
+   }
  }
 
 
