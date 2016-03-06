@@ -35,9 +35,10 @@ app.get('/admin/:id/:adminId', function(req, res){
 
 app.get('/poll/:id', function(req, res){
   var votes = app.locals.votes[req.params.id];
-  // var id = req.url.split(/poll/)[1].slice(1,20)
-  // var voteChoices = app.locals.votes[req.params.id].choices
-  res.render('vote');
+  var id = req.url.split(/poll/)[1].slice(1,20)
+  var voteChoices = app.locals.votes[req.params.id].choices
+  res.render(__dirname + '/views/vote', {votes: votes.choices} )
+  // res.render('vote');
 })
 
 app.post('/poll', function(request, results){
@@ -66,11 +67,11 @@ app.post('/poll', function(request, results){
 })
 
 io.on('connection', function (socket) {
-  console.log('A user has connected.', io.engine.clientsCount);
-
-  io.sockets.emit('usersConnected', io.engine.clientsCount);
-
-  socket.emit('statusMessage', 'You have connected.');
+  // console.log('A user has connected.', io.engine.clientsCount);
+  //
+  // io.sockets.emit('usersConnected', io.engine.clientsCount);
+  //
+  // socket.emit('statusMessage', 'You have connected.');
 
 
   socket.on('message', function (channel, message) {
@@ -79,18 +80,17 @@ io.on('connection', function (socket) {
     if (channel === 'voteCast') {
       var voteId = this.handshake.headers.referer.split('/poll/')[1].slice(0,20)
       // votes.poll[socket.id] = message
-      eval(locus)
       socket.emit('voteCount', votes.countVotes(votes.pollChoices));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
   });
 
-  socket.on('disconnect', function () {
-    console.log('A user has disconnected.', io.engine.clientsCount);
-    delete votes.poll[socket.id];
-    socket.emit('voteCount',votes.countVotes(votes.poll));
-    io.sockets.emit('userConnection', io.engine.clientsCount);
-  });
+    // socket.on('disconnect', function () {
+    //   console.log('A user has disconnected.', io.engine.clientsCount);
+    //   delete votes.poll[socket.id];
+    //   socket.emit('voteCount',votes.countVotes(votes.poll));
+    //   io.sockets.emit('userConnection', io.engine.clientsCount);
+    // });
 });
 
 // function countVotes(votes) {

@@ -16,8 +16,9 @@
 </script>
 <h3>things you can vote for!</h3>
     <div id="choices">
-    <script type="text/javascript">
-      <%=debugger %>
+      <% votes.forEach(function(vote){ %>
+          <button class='btn-large red'><%= vote %> </button>
+      <% }) %>
     </script>
 
 
