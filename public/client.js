@@ -17,7 +17,8 @@ socket.on('statusMessage', function (message) {
 var buttons = document.querySelectorAll('#choices button');
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', function () {
-  socket.send('voteCast', this.innerText);
+  var id = window.location.pathname.split(/poll/)[1].slice(1,21)
+  socket.send('voteCast', this.innerText, id);
   });
 }
 

@@ -60,6 +60,7 @@ app.post('/poll', function(request, results){
   })
 
 
+
   results.render(__dirname + '/views/poll',{
     vote:votes
   })
@@ -72,39 +73,31 @@ io.on('connection', function (socket) {
   // io.sockets.emit('usersConnected', io.engine.clientsCount);
   //
   // socket.emit('statusMessage', 'You have connected.');
-
-
-  socket.on('message', function (channel, message) {
-
-    var poll = app.locals.votes
+  var userVotes = {};
+  socket.on('message', function (channel, message, id) {
     if (channel === 'voteCast') {
-      var voteId = this.handshake.headers.referer.split('/poll/')[1].slice(0,20)
-      // votes.poll[socket.id] = message
-      socket.emit('voteCount', votes.countVotes(votes.pollChoices));
+      userVotes[socket.id] = message
+
+      socket.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
   });
 
-    // socket.on('disconnect', function () {
-    //   console.log('A user has disconnected.', io.engine.clientsCount);
-    //   delete votes.poll[socket.id];
-    //   socket.emit('voteCount',votes.countVotes(votes.poll));
-    //   io.sockets.emit('userConnection', io.engine.clientsCount);
-    // });
+   socket.on('disconnect', function () {
+     console.log('A user has disconnected.', io.engine.clientsCount);
+     delete userVotes[socket.id];
+     socket.emit('voteCount',countVotes(userVotes,id));
+     io.sockets.emit('userConnection', io.engine.clientsCount);
+   });
 });
 
-// function countVotes(votes) {
-// var voteCount = {
-//     A: 0,
-//     B: 0,
-//     C: 0,
-//     D: 0
-// };
-//   for (var vote in votes) {
-//     voteCount[votes[vote]]++
-//   }
-//   return voteCount;
-// }
+ function countVotes(userVotes, id) {
+ var voteCount = app.locals.votes[id].pollChoices;
+   for (var pick in userVotes) {
+     voteCount[userVotes[pick]]++
+   }
+   return voteCount;
+ }
 
 
 module.exports = server;
