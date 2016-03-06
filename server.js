@@ -35,6 +35,8 @@ app.get('/admin/:id/:adminId', function(req, res){
 
 app.get('/poll/:id', function(req, res){
   var votes = app.locals.votes[req.params.id];
+  // var id = req.url.split(/poll/)[1].slice(1,20)
+  // var voteChoices = app.locals.votes[req.params.id].choices
   res.render('vote');
 })
 
@@ -49,14 +51,13 @@ app.post('/poll', function(request, results){
   var title = requestPayload.poll.title
   var choices = requestPayload.pollInformation.choices
   var question = requestPayload.pollInformation.question
+  var votes = new Votes( id,adminId, userRoute, adminRoute,pollChoices, title, question, choices)
   app.locals.votes[id] = votes
 
   var newPoll = choices.forEach(function(choice){
     return (pollChoices[choice] = 0)
   })
 
-
-  var votes = new Votes( id,adminId, userRoute, adminRoute,pollChoices, title, question)
 
   results.render(__dirname + '/views/poll',{
     vote:votes
@@ -71,9 +72,14 @@ io.on('connection', function (socket) {
 
   socket.emit('statusMessage', 'You have connected.');
 
+
   socket.on('message', function (channel, message) {
+
+    var poll = app.locals.votes
     if (channel === 'voteCast') {
-      votes.poll[socket.id] = message;
+      var voteId = this.handshake.headers.referer.split('/poll/')[1].slice(0,20)
+      // votes.poll[socket.id] = message
+      eval(locus)
       socket.emit('voteCount', votes.countVotes(votes.pollChoices));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
