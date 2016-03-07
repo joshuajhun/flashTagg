@@ -1,8 +1,21 @@
-Poll title:<%=vote.title%>
-<br>
-Poll question: <%=vote.question%>
-<br>
-<a href="<%=vote.adminRoute%>">Admin Url</a>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <script rel="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <title>Poll Links</title>
+  </head>
+  <body>
+  <h3>  Poll title:<%=vote.title%>
+    <br>
+    <h4>Poll question: <%=vote.question%></h4>
+    <br>
+    <h5> This is the admin link. You will be directed to a dashboard where you can close polls<a href="<%=vote.adminRoute%>"> <%=vote.adminRoute%></a></h5>
 
-<br>
-<a href="<%=vote.userRoute%>">User Url</a>
+    <br>
+    <h5>Share this link with other users so they can vote! <a href="<%=vote.userRoute%>"><%=vote.userRoute%></a></h5>
+
+
+  </body>
+</html>

@@ -115,5 +115,10 @@ function pollExpire(votes) {
   }
 }
 
+if (!module.parent) {
+  app.listen(app.get('port'), () => {
+    console.log(`${app.locals.title} is running on ${port}.`);
+  });
+}
 
 module.exports = server;
