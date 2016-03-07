@@ -1,5 +1,4 @@
 var socket = io();
-var admin = io("/admin")
 
 var connectionCount = document.getElementById('connection-count');
 
@@ -33,26 +32,13 @@ socket.on('voteCount', function (votes) {
    votesOnPage.innerText = currentVote
 });
 
-var adminVotes = document.getElementById('admin-view')
+socket.on('addminVoteCount',function(votes){
 
-admin.on('addminVoteCount',function(votes){
-  console.log('votes')
-  var currentVote ='Vote count';
-  for(var vote in votes){
-    currentVote = currentVote + ' ' + vote + ': ' + votes[vote] + ' ';
-   }
-   votesOnPage.innerText = currentVote
-});
-// admin.on('addminVoteCount',function(votes){
-//   console.log('suh dude')
-//   var currentVote ='Vote count';
-//   for(var vote in votes){
-//     currentVote = currentVote + ' ' + vote + ': ' + votes[vote] + ' ';
-//    }
-//    votesOnPage.innerText = currentVote
-// });
+})
 
 var currentVoteItem = document.getElementById('vote-item')
 socket.on('currentVoteCount',function(votes){
-          currentVoteItem.innerText = votes
+  $('#greeting').text('thank you for voting')
+  $('#choices').children().remove()
+  currentVoteItem.innerText = votes
 })

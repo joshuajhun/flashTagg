@@ -76,7 +76,6 @@ io.on('connection', function (socket) {
       userVotes[socket.id] = message
       socket.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
-      socket.emit('addminVoteCount', countVotes(userVotes, id))
     }
   });
 
@@ -91,14 +90,10 @@ io.on('connection', function (socket) {
  function countVotes(userVotes, id) {
  var voteCount = app.locals.votes[id].pollChoices;
    for (var pick in userVotes) {
-     if(userVotes[pick]){
      voteCount[userVotes[pick]]++
-   } else {
-     voteCount[userVotes[pick]] = 1
    }
    return voteCount;
    }
- }
 
 
 module.exports = server;

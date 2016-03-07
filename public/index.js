@@ -6,3 +6,8 @@ var addPollChoiceToPage = $('#add-poll-choice')
           +'</div>'
       + '</div>')
   })
+
+var hideVoteResults = $('#hide')
+  hideVoteResults.click(event,function(){
+    
+  })

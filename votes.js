@@ -11,14 +11,5 @@ function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, c
 
 }
 
-Votes.prototype.countVotes = function(pollChoices){
-
-  var voteCount = this.pollChoices
-  for ( vote in voteCount) {
-    voteCount[poll[vote]]++
-  }
-    return voteCount;
-};
-
 
 module.exports = Votes;
