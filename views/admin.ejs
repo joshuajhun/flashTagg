@@ -8,9 +8,11 @@
   </head>
   <body>
     <h1>Admin View Page</h1>
-    <div id="admin-view">
+    <h3>Poll Title: <%=votes.title%></h1>
+    <h3>Poll Question: <%=votes.question%></h2>
 
-    </div>
+    <h2>poll results</h2>
+    <h3 id="votes-count"> </h3>
     <div class="switch">
       <p>
       </p>
@@ -22,5 +24,6 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
+    <script src="vote.ejs"></script>
   </body>
 </html>
