@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <meta charset="utf-8">
     <title>Admin View</title>
   </head>
@@ -13,11 +14,13 @@
     <div class="switch">
       <p>
       </p>
-      <label>
-        <input type="checkbox">
+      <label id="close-poll">
+        <input type="checkbox" id="close-poll">
         <span class="lever"></span>
         End Poll
       </label>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
   </body>
 </html>

@@ -38,7 +38,7 @@ app.get('/poll/:id', function(req, res){
   var votes = app.locals.votes[req.params.id];
   var id = req.url.split(/poll/)[1].slice(1,20)
   var voteChoices = app.locals.votes[req.params.id].choices
-  res.render(__dirname + '/views/vote', {votes: votes.choices} )
+  res.render(__dirname + '/views/vote', {votes:votes} )
   // res.render('vote');
 })
 
@@ -53,8 +53,9 @@ app.post('/poll', function(request, results){
   var title = requestPayload.poll.title
   var choices = requestPayload.pollInformation.choices
   var question = requestPayload.pollInformation.question
+  var active   = true
 
-  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices)
+  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active)
 
   app.locals.votes[id] = votes
   var newPoll = choices.forEach(function(choice){
@@ -76,6 +77,12 @@ io.on('connection', function (socket) {
       userVotes[socket.id] = message
       socket.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
+    }
+  })
+  socket.on('message', function (channel, pollId) {
+    if (channel === 'endVotingPoll'){
+      app.locals.votes[pollId].active = false
+      socket.emit('pollIsClose')
     }
   });
 

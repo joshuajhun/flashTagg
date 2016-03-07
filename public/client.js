@@ -22,6 +22,7 @@ for (var i = 0; i < buttons.length; i++) {
   });
 }
 
+
 var votesOnPage = document.getElementById('votes-count')
 
 socket.on('voteCount', function (votes) {
@@ -37,8 +38,14 @@ socket.on('addminVoteCount',function(votes){
 })
 
 var currentVoteItem = document.getElementById('vote-item')
+
 socket.on('currentVoteCount',function(votes){
   $('#greeting').text('thank you for voting')
   $('#choices').children().remove()
   currentVoteItem.innerText = votes
+})
+
+$('#close-poll').on('click', function(){
+  var pollId = window.location.pathname.split('/')[2];
+  socket.send('endVotingPoll', pollId)
 })

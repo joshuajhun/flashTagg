@@ -17,14 +17,19 @@
 </script>
 <h3 id='greeting'>things you can vote for!</h3>
     <div id="choices">
-      <% votes.forEach(function(vote){ %>
-          <button><%= vote %> </button>
-      <% }) %>
+      <%if(votes.active === true) { %>
+        <% votes.choices.forEach(function(vote){ %>
+            <button><%= vote %> </button>
+        <% }) %>
+    <% } else { %>
+        <h1> voting is now closed fam <h1>
+    <% } %>
+  </div>
+
     </script>
 
 
 
-  </div>
     <!-- Make sure your JS is at the bottom of the body! -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
