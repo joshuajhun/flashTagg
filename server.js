@@ -91,7 +91,7 @@ io.on('connection', function (socket) {
    socket.on('disconnect', function () {
      console.log('A user has disconnected.', io.engine.clientsCount);
      delete userVotes[socket.id];
-     socket.emit('voteCount',countVotes(userVotes,id));
+     socket.emit('voteCount',countVotes(userVotes));
      io.sockets.emit('userConnection', io.engine.clientsCount);
    });
 });
@@ -115,5 +115,10 @@ function pollExpire(votes) {
   }
 }
 
+if (!module.parent) {
+  app.listen(app.get('port'), () => {
+    console.log(`${app.locals.title} is running on ${port}.`);
+  });
+}
 
 module.exports = server;
