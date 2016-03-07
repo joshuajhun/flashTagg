@@ -3,6 +3,7 @@
   <head>
     <title>flashTagg</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <h1>flashTagg</h1>
     <div id="connection-count"></div>
     <div id="status-message"></div>
@@ -14,13 +15,21 @@
 
 
 </script>
-<h3>things you can vote for!</h3>
+<h3 id='greeting'>things you can vote for!</h3>
     <div id="choices">
-    <button class='btn-floating btn-large red'>A</button>
-    <button class='btn-floating btn-large red'>B</button>
-    <button class='btn-floating btn-large red'>C</button>
-    <button class='btn-floating btn-large red'>D</button>
+      <%if(votes.active === true) { %>
+        <% votes.choices.forEach(function(vote){ %>
+            <button><%= vote %> </button>
+        <% }) %>
+    <% } else { %>
+        <h1> voting is now closed fam <h1>
+    <% } %>
   </div>
+
+    </script>
+
+
+
     <!-- Make sure your JS is at the bottom of the body! -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>

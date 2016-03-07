@@ -13,13 +13,15 @@ socket.on('statusMessage', function (message) {
   statusMessage.innerText = message;
 });
 
-var buttons = document.querySelectorAll('#choices button');
 
+var buttons = document.querySelectorAll('#choices button');
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', function () {
-  socket.send('voteCast', this.innerText);
+  var id = window.location.pathname.split(/poll/)[1].slice(1,21)
+  socket.send('voteCast', this.innerText, id);
   });
 }
+
 
 var votesOnPage = document.getElementById('votes-count')
 
@@ -31,8 +33,19 @@ socket.on('voteCount', function (votes) {
    votesOnPage.innerText = currentVote
 });
 
+socket.on('addminVoteCount',function(votes){
+
+})
 
 var currentVoteItem = document.getElementById('vote-item')
+
 socket.on('currentVoteCount',function(votes){
-          currentVoteItem.innerText = votes
+  $('#greeting').text('thank you for voting')
+  $('#choices').children().remove()
+  currentVoteItem.innerText = votes
+})
+
+$('#close-poll').on('click', function(){
+  var pollId = window.location.pathname.split('/')[2];
+  socket.send('endVotingPoll', pollId)
 })
