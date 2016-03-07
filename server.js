@@ -79,10 +79,10 @@ io.on('connection', function (socket) {
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
   })
+
   socket.on('message', function (channel, pollId) {
     if (channel === 'endVotingPoll'){
       app.locals.votes[pollId].active = false
-      socket.emit('pollIsClose')
     }
   });
 
