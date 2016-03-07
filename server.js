@@ -53,13 +53,19 @@ app.post('/poll', function(request, results){
   var question       = requestPayload.pollInformation.question
   var active         = true
   var privatePoll    = request.body.pollInformation.privatePoll
+  var time           = request.body.pollInformation.time
 
-  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active, privatePoll)
+
+  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active, privatePoll, time)
 
   app.locals.votes[id] = votes
+
+  pollExpire(votes)
+
   var newPoll = choices.forEach(function(choice){
     return (pollChoices[choice.trim()] = 0)
   })
+
   results.render(__dirname + '/views/poll',{
     vote:votes
   })
@@ -76,12 +82,12 @@ io.on('connection', function (socket) {
     }
   })
 
-
   socket.on('message', function (channel, pollId) {
     if (channel === 'endVotingPoll'){
       app.locals.votes[pollId].active = false
     }
   });
+
 
    socket.on('disconnect', function () {
      console.log('A user has disconnected.', io.engine.clientsCount);
@@ -98,6 +104,17 @@ io.on('connection', function (socket) {
    }
    return voteCount;
    }
+
+
+
+
+function pollExpire(votes) {
+  if (votes.time) {
+    setTimeout(function () {
+      votes.active = false
+    }, votes.time * 60000);
+  }
+}
 
 
 module.exports = server;

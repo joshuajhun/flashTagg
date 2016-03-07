@@ -1,5 +1,5 @@
 var locus = require('locus')
-function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, choices, active, privatePoll){
+function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, choices, active, privatePoll, time){
   this.id          = id,
   this.adminId     = adminId,
   this.userRoute   = userRoute + id,
@@ -9,8 +9,8 @@ function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, c
   this.question    = question,
   this.choices     = choices,
   this.active      = active,
-  this.privatePoll = privatePoll || false 
-
+  this.privatePoll = privatePoll || false
+  this.time        = time
 }
 
 
