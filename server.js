@@ -8,7 +8,6 @@ const io       = socketIo(server);
 var port       = process.env.PORT || 3000;
 const Votes    = require('./votes')
 const votes    = new Votes()
-const locus    = require('locus');
 const generateId = require('./lib/generateId')
 const generateRoutes = require('./lib/generateRoutes')
 app.locals.votes = {}

@@ -1,4 +1,3 @@
-var locus = require('locus')
 function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, choices, active, privatePoll, time){
   this.id          = id,
   this.adminId     = adminId,
