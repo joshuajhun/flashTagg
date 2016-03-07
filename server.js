@@ -31,7 +31,7 @@ app.get('/', function(request, response){
 
 app.get('/admin/:id/:adminId', function(req, res){
   var votes = app.locals.votes[req.params.id];
-  res.render(__dirname + '/views/admin', {votes: votes.pollChoices});
+  res.render(__dirname + '/views/admin', {votes: votes});
 })
 
 app.get('/poll/:id', function(req, res){
@@ -39,11 +39,9 @@ app.get('/poll/:id', function(req, res){
   var id = req.url.split(/poll/)[1].slice(1,20)
   var voteChoices = app.locals.votes[req.params.id].choices
   res.render(__dirname + '/views/vote', {votes:votes} )
-  // res.render('vote');
 })
 
 app.post('/poll', function(request, results){
-
   var pollChoices    = {}
   var id             = generateId()
   var adminId        = generateRoutes.adminId()
@@ -73,10 +71,11 @@ io.on('connection', function (socket) {
   socket.on('message', function (channel, message, id) {
     if (channel === 'voteCast') {
       userVotes[socket.id] = message
-      socket.emit('voteCount', countVotes(userVotes, id));
+      io.sockets.emit('voteCount', countVotes(userVotes, id));
       socket.emit('currentVoteCount','You voted for: ' + message)
     }
   })
+
 
   socket.on('message', function (channel, pollId) {
     if (channel === 'endVotingPoll'){
