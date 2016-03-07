@@ -44,26 +44,24 @@ app.get('/poll/:id', function(req, res){
 
 app.post('/poll', function(request, results){
 
-  var pollChoices = {}
-  var id = generateId()
-  var adminId = generateRoutes.adminId()
-  var userRoute = generateRoutes.votePath(request)
-  var adminRoute = generateRoutes.adminPath(request)
+  var pollChoices    = {}
+  var id             = generateId()
+  var adminId        = generateRoutes.adminId()
+  var userRoute      = generateRoutes.votePath(request)
+  var adminRoute     = generateRoutes.adminPath(request)
   var requestPayload = request.body
-  var title = requestPayload.poll.title
-  var choices = requestPayload.pollInformation.choices
-  var question = requestPayload.pollInformation.question
-  var active   = true
+  var title          = requestPayload.poll.title
+  var choices        = requestPayload.pollInformation.choices
+  var question       = requestPayload.pollInformation.question
+  var active         = true
+  var privatePoll    = request.body.pollInformation.privatePoll
 
-  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active)
+  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active, privatePoll)
 
   app.locals.votes[id] = votes
   var newPoll = choices.forEach(function(choice){
     return (pollChoices[choice.trim()] = 0)
   })
-
-
-
   results.render(__dirname + '/views/poll',{
     vote:votes
   })

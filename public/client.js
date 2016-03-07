@@ -49,3 +49,5 @@ $('#close-poll').on('click', function(){
   var pollId = window.location.pathname.split('/')[2];
   socket.send('endVotingPoll', pollId)
 })
+$('#private-poll').on('click',function(){
+})
