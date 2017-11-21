@@ -1,3 +1,4 @@
+require('locus')
 var socket = io();
 
 var connectionCount = document.getElementById('connection-count');
@@ -26,6 +27,7 @@ for (var i = 0; i < buttons.length; i++) {
 var votesOnPage = $('#votes-count')
 
 socket.on('voteCount', function (votes) {
+  debugger;
   var currentVote = 'Vote count';
   for (var vote in votes) {
     currentVote = currentVote + ' ' + vote + ': ' + votes[vote] + ' ';
@@ -42,7 +44,9 @@ socket.on('currentVoteCount',function(votes){
   currentVoteItem.text(votes)
 })
 
+debugger;
 $('#close-poll').on('click', function(){
-  var pollId = window.location.pathname.split('/')[2];
-  socket.send('endVotingPoll', pollId)
+  alert('why tho')
+  // var pollId = window.location.pathname.split('/')[2];
+  // socket.send('endVotingPoll', pollId)
 })

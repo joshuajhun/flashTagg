@@ -6,7 +6,8 @@ class Votes {
   this.adminId     = adminId,
   this.userRoute   = userRoute + id,
   this.adminRoute  = adminRoute + '/' + id + '/' + adminId,
-  this.pollChoices = this.generatePoll(choices),
+  this.choices     = choices
+  this.pollChoices = this.generatePoll(this.choices),
   this.title       = title,
   this.question    = question,
   this.active      = true,

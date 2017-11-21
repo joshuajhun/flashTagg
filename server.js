@@ -27,40 +27,33 @@ app.get('/', function(request, response){
   response.render(__dirname + '/views/index');
 })
 
-app.post('/poll', function(request, results){
-  const requestPayload = request.body
-  const { poll, pollInformation } = requestPayload
+app.post('/poll', (req, res) => {
+  const { poll, pollInformation } = req.body
   const { generateAdminId, generateVotePath, generateAdminPath } = generateRoutes
   const { choices, question, privatePoll, time } = pollInformation
   const { title }      = poll
   const id             = generateId()
   const adminId        = generateAdminId()
-  const userRoute      = generateVotePath(request)
-  const adminRoute     = generateAdminPath(request)
+  const userRoute      = generateVotePath(req)
+  const adminRoute     = generateAdminPath(req)
 
   const votes = new Votes({ id, adminId, userRoute, adminRoute , title, question,
                             choices, privatePoll, time })
 
-    app.locals.votes = Object.assign({[id]: votes}, app.locals.votes)
-
-    pollExpire(votes)
-
-  results.render(__dirname + '/views/poll',{
-    vote:votes
-  })
-
+  app.locals.votes = Object.assign({[id]: votes}, app.locals.votes)
+  pollExpire(votes)
+  res.render(__dirname + '/views/poll', { vote: votes })
 })
 
 app.get('/admin/:id/:adminId', function(req, res){
   var votes = app.locals.votes[req.params.id];
-  res.render(__dirname + '/views/admin', {votes: votes});
+  res.render(__dirname + '/views/admin', { votes: votes });
 })
 
 app.get('/poll/:id', function(req, res){
-  var votes = app.locals.votes[req.params.id];
-  var id = req.url.split(/poll/)[1].slice(1,20)
-  var voteChoices = app.locals.votes[req.params.id].choices
-  res.render(__dirname + '/views/vote', {votes:votes} )
+  const id = req.params.id
+  var votes = app.locals.votes[id];
+  res.render(__dirname + '/views/vote', { votes: votes })
 })
 
 
@@ -75,6 +68,7 @@ io.on('connection', function (socket) {
   })
 
   socket.on('message', function (channel, pollId) {
+    eval(locus)
     if (channel === 'endVotingPoll'){
       app.locals.votes[pollId].active = false
     }

@@ -10,7 +10,7 @@
   </head>
   <body>
     <br><br>
-    <%if (votes.privatePoll === false){ %>
+    <%if (!votes.privatePoll){ %>
       <h3 id="votes-count"></h3>
       <%}else{%>
         <br>
@@ -20,7 +20,7 @@
 
 </script>
     <div id="choices">
-      <%if(votes.active === true) { %>
+      <%if(votes.active) { %>
         <h3 id='greeting'>things you can vote for!</h3>
         <% votes.choices.forEach(function(vote){ %>
             <button><%= vote %> </button>
@@ -31,13 +31,8 @@
   </div>
 
     </script>
-
-
-
     <!-- Make sure your JS is at the bottom of the body! -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
-
-
   </body>
 </html>
