@@ -1,3 +1,4 @@
+require('locus')
 const http     = require('http');
 const path     = require('path')
 const express  = require('express');
@@ -7,7 +8,6 @@ const socketIo = require('socket.io');
 const io       = socketIo(server);
 var port       = process.env.PORT || 3000;
 const Votes    = require('./votes')
-const votes    = new Votes()
 const generateId = require('./lib/generateId')
 const generateRoutes = require('./lib/generateRoutes')
 app.locals.votes = {}
@@ -21,11 +21,34 @@ server.listen(port, function(){
 
 app.set('view engine', 'ejs');
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(request, response){
   response.render(__dirname + '/views/index');
+})
+
+app.post('/poll', function(request, results){
+  const requestPayload = request.body
+  const { poll, pollInformation } = requestPayload
+  const { generateAdminId, generateVotePath, generateAdminPath } = generateRoutes
+  const { choices, question, privatePoll, time } = pollInformation
+  const { title }      = poll
+  const id             = generateId()
+  const adminId        = generateAdminId()
+  const userRoute      = generateVotePath(request)
+  const adminRoute     = generateAdminPath(request)
+
+  const votes = new Votes({ id, adminId, userRoute, adminRoute , title, question,
+                            choices, privatePoll, time })
+
+    app.locals.votes = Object.assign({[id]: votes}, app.locals.votes)
+
+    pollExpire(votes)
+
+  results.render(__dirname + '/views/poll',{
+    vote:votes
+  })
+
 })
 
 app.get('/admin/:id/:adminId', function(req, res){
@@ -40,36 +63,6 @@ app.get('/poll/:id', function(req, res){
   res.render(__dirname + '/views/vote', {votes:votes} )
 })
 
-app.post('/poll', function(request, results){
-  var pollChoices    = {}
-  var id             = generateId()
-  var adminId        = generateRoutes.adminId()
-  var userRoute      = generateRoutes.votePath(request)
-  var adminRoute     = generateRoutes.adminPath(request)
-  var requestPayload = request.body
-  var title          = requestPayload.poll.title
-  var choices        = requestPayload.pollInformation.choices
-  var question       = requestPayload.pollInformation.question
-  var active         = true
-  var privatePoll    = request.body.pollInformation.privatePoll
-  var time           = request.body.pollInformation.time
-
-
-  var votes = new Votes( id, adminId, userRoute, adminRoute,pollChoices, title, question, choices, active, privatePoll, time)
-
-  app.locals.votes[id] = votes
-
-  pollExpire(votes)
-
-  var newPoll = choices.forEach(function(choice){
-    return (pollChoices[choice.trim()] = 0)
-  })
-
-  results.render(__dirname + '/views/poll',{
-    vote:votes
-  })
-
-})
 
 io.on('connection', function (socket) {
   var userVotes = {};
@@ -91,21 +84,17 @@ io.on('connection', function (socket) {
    socket.on('disconnect', function () {
      console.log('A user has disconnected.', io.engine.clientsCount);
      delete userVotes[socket.id];
-     socket.emit('voteCount',countVotes(userVotes));
      io.sockets.emit('userConnection', io.engine.clientsCount);
    });
 });
 
  function countVotes(userVotes, id) {
- var voteCount = app.locals.votes[id].pollChoices;
+ var voteCount = app.locals.votes[id].pollChoices; /// needs a resuce make sure to exit out of the process
    for (var pick in userVotes) {
      voteCount[userVotes[pick]]++
    }
    return voteCount;
    }
-
-
-
 
 function pollExpire(votes) {
   if (votes.time) {

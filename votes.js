@@ -1,16 +1,24 @@
-function Votes(id, adminId, userRoute,adminRoute,pollChoices, title, question, choices, active, privatePoll, time){
+class Votes {
+ constructor({id, adminId, userRoute, adminRoute, pollChoices, title,
+               question, active, privatePoll, time, choices}) {
+                 console.log('called!')
   this.id          = id,
   this.adminId     = adminId,
   this.userRoute   = userRoute + id,
   this.adminRoute  = adminRoute + '/' + id + '/' + adminId,
-  this.pollChoices = pollChoices,
+  this.pollChoices = this.generatePoll(choices),
   this.title       = title,
   this.question    = question,
-  this.choices     = choices,
-  this.active      = active,
+  this.active      = true,
   this.privatePoll = privatePoll || false
   this.time        = time
+  }
+
+  generatePoll(choices) {
+    return choices.reduce((choiceObj, choice) => (
+      Object.assign({ [choice.trim()]: 0 }, choiceObj)
+    ),{})
+  }
 }
 
-
-module.exports = Votes;
+module.exports = Votes

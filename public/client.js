@@ -31,7 +31,8 @@ socket.on('voteCount', function (votes) {
     currentVote = currentVote + ' ' + vote + ': ' + votes[vote] + ' ';
    }
    votesOnPage.text(currentVote)
-});
+}); // grab object with Object.keys(object) // reurn an array of object
+// itterate of that and reference the object.
 
 var currentVoteItem = $('#vote-item')
 
